@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Load the led module to control the LED string
-var led = require("./led/led.js");
+var led = require("./led.js");
 
 // Frequency, starting offset, speed, and color
 var frq = (2 * Math.PI) / 80;
