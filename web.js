@@ -16,10 +16,14 @@ io.on('connection', function(socket) {
     console.log("[SOCKET] Connection started.");
     socket.on('getQueue', function(){
         console.log("client requested the queue");
-        current = currentName;
+        socket.emit('getQueue',function(){
+             current = currentName;
         queue = queueNames;
         time = 53;
         timeBetweenPatterns = timeBetweenPatterns;
+        });
+       
+        
     });
     
     socket.on('addQueue', function(x){
