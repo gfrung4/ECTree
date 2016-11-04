@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags always come first -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,125 +9,262 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-  </head>
-  <body>
-      <div class="jumbotron">
-          <h1 class="display-3">ECE Dept Christmas Tree</h1>
-             <p class="lead">This is a way for everyone to control the pattern of the ECE department Christmas Tree.</p>
-             <hr class="my-2">
-             <p>You can either choose a preselected pattern or write some code using the given functions to change the lights. </p>
-             <p>Once you have made your decision please click the "Add to Queue" button and you pattern will be played when it is it's turn. </p>
-  <!--<p class="lead">-->
-    <!--<a class="btn btn-primary btn-lg" href="#" role="button">Add to Queue</a>-->
-  <!--</p>-->
-      </div>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <h1 class="display-3">ECE Dept Christmas Tree</h1>
+        <p class="lead">This is a way for everyone to control the pattern of the ECE department Christmas Tree.</p>
+        <hr class="my-2">
+        <p>You can either choose a preselected pattern or write some code using the given functions to change the lights. </p>
+        <p>Once you have made your decision please click the "Add to Queue" button and you pattern will be played when it is it's turn. </p>
+        <!--<p class="lead">-->
+        <!--<a class="btn btn-primary btn-lg" href="#" role="button">Add to Queue</a>-->
+        <!--</p>-->
+    </div>
     <div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-        
-      <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ChooseScriptModal">
+        <div class="row">
+            <div class="col-sm-4">
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ChooseScriptModal">
   Choose Script
 </button>
 
-<!-- Modal -->
-<div class="modal fade" id="ChooseScriptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Modal -->
+                <div class="modal fade" id="ChooseScriptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="ChooseScriptModalLabel">Choose Script</h4>
-      </div>
-      <div class="modal-body">
-          <div class="btn-group-vertical">
-              <div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary active">
+                                <h4 class="modal-title" id="ChooseScriptModalLabel">Choose Script</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="btn-group-vertical">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-primary active">
       <img class="img-responsive" src="rainbow.jpg" alt="Chania">
     <input type="radio" name="options" id="rainbow" autocomplete="off" checked> Rainbow
   </label>
-  <label class="btn btn-primary">
+                                        <label class="btn btn-primary">
       <img class="img-responsive" src="runner.png" alt="Chania">
     <input type="radio" name="options" id="option2" autocomplete="off"> Runner
   </label>
-  <label class="btn btn-primary">
+                                        <label class="btn btn-primary">
     <input type="radio" name="options" id="option3" autocomplete="off"> Script 3
   </label>
-</div>
-          </div>
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add to Queue</button>
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-    <div class="col-sm-4">
-      <!-- Button trigger modal -->
-      
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#AudioModal">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Add to Queue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <!-- Button trigger modal -->
+
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#AudioModal">
   Select Audio
 </button>
 
-<!-- Modal -->
-<div class="modal fade" id="AudioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Modal -->
+                <div class="modal fade" id="AudioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Select Audio</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add to Queue</button>
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-    <div class="col-sm-4">
-      <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                <h4 class="modal-title" id="myModalLabel">Select Audio</h4>
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Add to Queue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   Write Script
 </button>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Write Script</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add to Queue</button>
-      </div>
+                                <h4 class="modal-title" id="myModalLabel">Write Script</h4>
+                            </div>
+                            <div class="modal-body">
+                                ...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Add to Queue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th id="rowNameCurrent"> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="queueTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-    </div>
-  </div>
-</div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+    <script id="queueTableRow" type="text/plain">
+        <tr id="row[ID]">
+            <td id="rowName[ID]"></td>
+            <td id="rowTime[ID]">[TIME]</td>
+        </tr>
+    </script>
+
+    <script type="text/javascript">
+        String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
+        var current = "";
+        var queue = [];
+        var countdown = 0;
+        var timePerPattern = 0;
+        var countdownInterval;
+
+        var socket = io();
+
+        socket.on("connect", function() {
+            // Code here will be run when the user is connected.
+            socket.emit("getQueue");
+        });
+
+        socket.on("getQueue", function(res) {
+            // res.queue = ["mycoollights", "firstcode"]
+            // res.current = "pattern1"
+            // res.time = 53
+            // res.timePerPattern = 60
+
+            console.log("Got the queue!");
+            console.log(res);
+
+            current = res.current;
+            queue = res.queue;
+            countdown = res.time;
+            timePerPattern = res.timeBetweenPatterns;
+            updateQueue();
+        });
+
+        function updateQueue() {
+            console.log("Updating");
+            console.log(queue.length);
+            setCurrentName(current);
+            if (queue.length < numRows()) {
+                for (var i = 0, l = numRows() - queue.length; i < l; i++) {
+                    removeRow();
+                    console.log("Removing");
+                }
+            } else if (queue.length > numRows()) {
+                for (var i = 0, l = queue.length - numRows(); i < l; i++) {
+                    addRow();
+                    console.log("Adding");
+                }
+            }
+            var thisTime = countdown;
+            for (var i = 0, l = queue.length; i < l; i++) {
+                setName(i, queue[i]);
+                setTime(i, thisTime);
+                thisTime += timePerPattern;
+            }
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(queueCountdown, 1000);
+        }
+
+        function queueCountdown() {
+            countdown--;
+            if (countdown < 0) {
+                current = queue.shift();
+                countdown = timePerPattern;
+                updateQueue();
+            }
+            var thisTime = countdown;
+            for (var i = 0, l = queue.length; i < l; i++) {
+                setTime(i, thisTime);
+                thisTime += timePerPattern;
+            }
+        }
+
+        function numRows() {
+            return $("#queueTable").children().length;
+        }
+
+        function addRow() {
+            var numberRows = $("#queueTable").children().length;
+            var html = $("#queueTableRow").html();
+            html = html.replaceAll("[ID]", numberRows);
+            $("#queueTable").append(html);
+            console.log("Added row " + numberRows);
+        }
+
+        function removeRow() {
+            var numberRows = $("#queueTable").children().length;
+            $("#row" + (numberRows - 1)).remove();
+            console.log("Removed row " + (numberRows - 1));
+        }
+
+        function setName(row, name) {
+            $("#rowName" + row).text(name);
+        }
+
+        function setCurrentName(name) {
+            $("#rowNameCurrent").text(name);
+        }
+
+        function setTime(row, time) {
+            $("#rowTime" + row).text(time);
+        }
+    </script>
+
+
+
+
+</body>
+
 </html>
