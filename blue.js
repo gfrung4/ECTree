@@ -14,7 +14,7 @@ function showRainbow(f, o) {
         //var amt1 = Math.max(0, Math.min(127, 64 + Math.floor(64 * Math.sin(f * i + o))));
         //var amt2 = Math.max(0, Math.min(127, 64 + Math.floor(64 * Math.sin(f * i + o + (2 * Math.PI / 3)))));
         //var amt3 = Math.max(0, Math.min(127, 64 + Math.floor(64 * Math.sin(f * i + o + (4 * Math.PI / 3)))));
-        led.setLed(i, 127,0,0);//amt1, amt2, amt3);
+        led.setLed(i, 0,0,127);//amt1, amt2, amt3);
     }
     led.show();
 }

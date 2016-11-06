@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -7,6 +8,7 @@ var queueNames = ['hello','world','i','hope','this','works'];
 var currentName = 'none';
 var currentlyRunning;
 var timeBetweenPatterns = 240; // in seconds
+
 
 
 app.use('/', express.static(__dirname + '/UI'));
@@ -27,9 +29,9 @@ io.on('connection', function(socket) {
     });
     
     socket.on('addQueue', function(x){
-       console.log("add to the queue"+x);
-       queueNames.push(x.name);
-       queue.push(x.data);
+      console.log("add to the queue"+x);
+      queueNames.push(x.name);
+      queue.push(x.data);
     });
 
 
