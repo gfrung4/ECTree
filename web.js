@@ -7,6 +7,10 @@ var queue = [];
 var queueNames = [];//'hello','world','i','hope','this','works'];
 var currentName = 'Rainbow';
 
+var audioQueue =[];
+var audioQueueNames = [];
+var audioNames = ['Christmas Tree','Away In A Manger','So this is Christmas','Jingle Bells','Silient Night', 'White Christmas','Santa Claus is Coming to Town'];
+
 var timeBetweenPatterns = 10; // in seconds
 var builtInScripts = ['rainbow.js','runner.js','red.js','blue.js','green.js'];
 var builtInNames = ['Rainbow','Runner','Red','Blue','Green'];
@@ -84,6 +88,12 @@ io.on('connection', function(socket) {
             timeBetweenPatterns: timeBetweenPatterns
         });
     });
+    
+    socket.on('addAudioQueue', function(x){
+        console.log("adding" + audioNames[x.num]+"to the audio queue");
+        audioQueue.push(x.num);
+        audioQueueNames.push(audioNames[x.num]);
+    })
 
 
 
@@ -110,6 +120,9 @@ function timer(){
             time = timeBetweenPatterns;
             currentName = queueNames.shift();
             
+        }
+        if(audioQueue.length > 0){
+            console.log("adding to the audio queue");
         }
     }
 }

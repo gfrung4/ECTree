@@ -105,7 +105,7 @@
                  </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Add to Queue</button>
+                                <button type="button" id="AddtoSudioQueueBtn" class="btn btn-primary">Add to Queue</button>
                             </div>
                         </div>
                     </div>
@@ -284,6 +284,16 @@
                                                   console.log($('#scriptSelectBtn input:radio:checked').val());
                                                   socket.emit('addBuiltInQueue',{
                                                       num: $('#scriptSelectBtn input:radio:checked').val()
+                                                  });
+                                              }) </script> 
+                                            
+    <script> $('#AddtoSudioQueueBtn').on('click', function (e) {  
+                                                  //ACTION
+                                                  console.log("I pressed the add to Audio queue button");
+                                                  console.log(e);
+                                                  console.log($('#audioSelectBtn input:radio:checked').val());
+                                                  socket.emit('addAudioQueue',{
+                                                      num: $('#audioSelectBtn input:radio:checked').val()
                                                   });
                                               }) </script> 
 
