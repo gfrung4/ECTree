@@ -5,18 +5,50 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var queue = [];
 var queueNames = [];//'hello','world','i','hope','this','works'];
-var currentName = 'none';
+var currentName = 'Rainbow';
 
-var timeBetweenPatterns = 40; // in seconds
+var timeBetweenPatterns = 10; // in seconds
 var builtInScripts = ['rainbow.js','runner.js','red.js','blue.js','green.js'];
 var builtInNames = ['Rainbow','Runner','Red','Blue','Green'];
-var current = require('./'+builtInScripts[0]);
+var builtInRequire = [];
+var current = 0;//require('./'+builtInScripts[0]);
 var time = 0;
 var timeDelay = 50;
 
+var rainbow  = require('./'+builtInScripts[0]);
+var runner = require('./'+builtInScripts[1]);
+var red = require('./'+builtInScripts[2]);
+var blue =  require('./'+builtInScripts[3]);
+var green = require('./'+builtInScripts[4]);
+
+// for(var i=0;i<builtInNames;i++){
+//     var temp = require('./'+builtInScripts[i]);
+//     builtInRequire.add(temp);
+//     console.log(i);
+// }
 
 function run(){
-    current.run();
+    console.log("the time is "+time);
+    switch(current){
+        case 0:
+            rainbow.run();
+            break;
+        case 1:
+            runner.run();
+            break;
+        case 2:
+            red.run();
+            break;
+        case 3:
+            blue.run();
+            break;
+        case 4:
+            green.run();
+            break;
+        default:
+            console.log("bad current script");
+    }
+    // builtInRequire[0].run();
 }
 
 time = timeBetweenPatterns;
@@ -43,12 +75,12 @@ io.on('connection', function(socket) {
     socket.on('addBuiltInQueue', function(x){
       console.log("adding "+builtInNames[x.num]+" to the queue");
       queueNames.push(builtInNames[x.num]);
-      queue.push(builtInScripts[x.num]);
+      queue.push(x.num);//builtInScripts[x.num]);
       console.log("The new queue is "+queueNames);
       socket.emit('getQueue',{
             current: currentName,
             queue: queueNames,
-            time: 53,
+            time: time,
             timeBetweenPatterns: timeBetweenPatterns
         });
     });
@@ -70,12 +102,14 @@ setInterval(timer,1000);
 
 function timer(){
     time -= 1;
-    if (time===0){
+    if (time<=0){
         if(queue.length > 0){
             //change whats running
             console.log("changing the queue");
-            current = require('./'+queue[0]);
+            current = queue.shift();//require('./'+queue[0]);
             time = timeBetweenPatterns;
+            currentName = queueNames.shift();
+            
         }
     }
 }
@@ -83,3 +117,4 @@ function timer(){
 http.listen(887, function() {
     console.log('The server has started.');
 });
+
