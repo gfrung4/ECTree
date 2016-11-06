@@ -43,7 +43,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="btn-group-vertical">
-                                    <div class="btn-group" data-toggle="buttons">
+                                    <div class="btn-group" id=scriptSelectBtn data-toggle="buttons">
                                         <label class="btn btn-primary active">
       <img class="img-responsive" src="rainbow.jpg" alt="Chania">
     <input type="radio" name="options" id="rainbow" autocomplete="off" checked> Rainbow
@@ -52,9 +52,9 @@
       <img class="img-responsive" src="runner.png" alt="Chania">
     <input type="radio" name="options" id="runner" autocomplete="off"> Runner
   </label>
-                                        <label class="btn btn-primary">
+ <label class="btn btn-primary">
     <input type="radio" name="options" id="red" autocomplete="off"> Red
-  </label>
+ </label>
   <label class="btn btn-primary">
     <input type="radio" name="options" id="blue" autocomplete="off"> Blue
   </label>
@@ -68,7 +68,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Add to Queue</button>
+                                <button type="button" id="AddScriptToQueueBtn" class="btn btn-primary">Add to Queue</button>
                                 
                             </div>
                         </div>
@@ -269,7 +269,12 @@
         }
     </script>
 
-
+    <script> $('#AddScriptToQueueBtn').on('click', function (e) {  
+                                                  //ACTION
+                                                  console.log("I pressed the add to queue button");
+                                                  console.log(e);
+                                                  console.log($('#scriptSelectBtn input:radio:checked'));
+                                              }) </script> 
 
 
 </body>
