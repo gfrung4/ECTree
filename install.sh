@@ -14,7 +14,3 @@ echo installing mplayer
 echo setting path of audio rc
 #cp asoundrc ~/.asoundrc
 
-
-
-
-#somehow automate adding the 

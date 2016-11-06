@@ -76,25 +76,33 @@
                 </div>
             </div>
             <div class="col-sm-4">
-                <!-- Button trigger modal -->
+                
+                
+                <!-- Button trigger modal Audio Modul -->
 
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#AudioModal">
-  Select Audio
-</button>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#AudioModal">Select Audio </button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="AudioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                                <h4 class="modal-title" id="myModalLabel">Select Audio</h4>
-                            </div>
-                            <div class="modal-body">
-                                ...
-                            </div>
+<div class="modal fade" id="AudioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                <h4 class="modal-title" id="myModalLabel">Select Audio</h4>
+            </div>
+                <div class="modal-body">
+                    <div class="btn-group-vertical">
+                        <div class="btn-group" id=audioSelectBtn data-toggle="buttons">
+<label class="btn btn-primary active"> <input type="radio" name="options" id="christmasTree" value=0 autocomplete="off" checked> Christmas Tree </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="AwayInaManger" value=1 autocomplete="off"> Away In a Manger </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="SoThisIsChristmas" value=2 autocomplete="off"> So this is Christmas </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="JingleBells" value=3 autocomplete="off"> Jingle Bells </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="silientNight" value=4 autocomplete="off"> Silient Night </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="whiteChristmas" value=5 autocomplete="off"> White Christmas </label>
+<label class="btn btn-primary"> <input type="radio" name="options" id="santaClausIsComingToTown" value=6 autocomplete="off"> Santa Claus is Coming to Town </label>
+                        </div>
+                    </div>
+                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary">Add to Queue</button>

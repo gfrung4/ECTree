@@ -28,7 +28,7 @@ var green = require('./'+builtInScripts[4]);
 // }
 
 function run(){
-    console.log("the time is "+time);
+    // console.log("the time is "+time);
     switch(current){
         case 0:
             rainbow.run();
