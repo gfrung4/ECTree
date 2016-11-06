@@ -5,3 +5,5 @@ echo installing ace script editor package
 #git clone https://github.com/ajaxorg/ace-builds/
 echo installing express
 #npm -g install express
+echo installing sleep node
+npm -g install sleep
