@@ -46,20 +46,20 @@
                                     <div class="btn-group" id=scriptSelectBtn data-toggle="buttons">
                                         <label class="btn btn-primary active">
       <img class="img-responsive" src="rainbow.jpg" alt="Chania">
-    <input type="radio" name="options" id="rainbow" autocomplete="off" checked> Rainbow
+    <input type="radio" name="options" id="rainbow" value=0 autocomplete="off" checked> Rainbow
   </label>
                                         <label class="btn btn-primary">
       <img class="img-responsive" src="runner.png" alt="Chania">
-    <input type="radio" name="options" id="runner" autocomplete="off"> Runner
+    <input type="radio" name="options" id="runner" value=1 autocomplete="off"> Runner
   </label>
  <label class="btn btn-primary">
-    <input type="radio" name="options" id="red" autocomplete="off"> Red
+    <input type="radio" name="options" id="red" value=2 autocomplete="off"> Red
  </label>
   <label class="btn btn-primary">
-    <input type="radio" name="options" id="blue" autocomplete="off"> Blue
+    <input type="radio" name="options" id="blue" value=3 autocomplete="off"> Blue
   </label>
   <label class="btn btn-primary">
-    <input type="radio" name="options" id="green" autocomplete="off"> Greem
+    <input type="radio" name="options" id="green" value=4 autocomplete="off"> Greem
   </label>
                                     </div>
                                 </div>
@@ -273,7 +273,10 @@
                                                   //ACTION
                                                   console.log("I pressed the add to queue button");
                                                   console.log(e);
-                                                  console.log($('#scriptSelectBtn input:radio:checked'));
+                                                  console.log($('#scriptSelectBtn input:radio:checked').val());
+                                                  socket.emit('addBuiltInQueue',{
+                                                      num: $('#scriptSelectBtn input:radio:checked').val()
+                                                  });
                                               }) </script> 
 
 

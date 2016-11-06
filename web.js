@@ -8,6 +8,8 @@ var queueNames = ['hello','world','i','hope','this','works'];
 var currentName = 'none';
 var currentlyRunning;
 var timeBetweenPatterns = 240; // in seconds
+var builtInScripts = ['rainbow.js','runner.js','red.js','blue.js','green.js'];
+var builtInNames = ['Rainbow','Runner','Red','Blue','Green'];
 
 
 
@@ -28,10 +30,17 @@ io.on('connection', function(socket) {
         
     });
     
-    socket.on('addQueue', function(x){
-      console.log("add to the queue"+x);
-      queueNames.push(x.name);
-      queue.push(x.data);
+    socket.on('addBuiltInQueue', function(x){
+      console.log("adding "+builtInNames[x.num]+" to the queue");
+      queueNames.push(builtInNames[x.num]);
+      queue.push(builtInScripts[x.num]);
+      console.log("The new queue is "+queueNames);
+      socket.emit('getQueue',{
+            current: currentName,
+            queue: queueNames,
+            time: 53,
+            timeBetweenPatterns: timeBetweenPatterns
+        });
     });
 
 
