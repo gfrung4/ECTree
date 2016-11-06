@@ -26,3 +26,7 @@ function run() {
 
 run();
 // setInterval(run, 0);
+
+module.exports.run = function() {
+    run();
+}

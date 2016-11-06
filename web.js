@@ -4,13 +4,23 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var queue = [];
-var queueNames = ['hello','world','i','hope','this','works'];
+var queueNames = [];//'hello','world','i','hope','this','works'];
 var currentName = 'none';
-var currentlyRunning;
-var timeBetweenPatterns = 240; // in seconds
+
+var timeBetweenPatterns = 40; // in seconds
 var builtInScripts = ['rainbow.js','runner.js','red.js','blue.js','green.js'];
 var builtInNames = ['Rainbow','Runner','Red','Blue','Green'];
+var current = require('./'+builtInScripts[0]);
+var time = 0;
+var timeDelay = 50;
 
+
+function run(){
+    current.run();
+}
+
+time = timeBetweenPatterns;
+setInterval(run,timeDelay);
 
 
 app.use('/', express.static(__dirname + '/UI'));
@@ -23,7 +33,7 @@ io.on('connection', function(socket) {
         socket.emit('getQueue',{
             current: currentName,
             queue: queueNames,
-            time: 53,
+            time: time,
             timeBetweenPatterns: timeBetweenPatterns
         });
        
@@ -53,6 +63,22 @@ io.on('connection', function(socket) {
 
     });
 });
+
+
+
+setInterval(timer,1000);
+
+function timer(){
+    time -= 1;
+    if (time===0){
+        if(queue.length > 0){
+            //change whats running
+            console.log("changing the queue");
+            current = require('./'+queue[0]);
+            time = timeBetweenPatterns;
+        }
+    }
+}
 
 http.listen(887, function() {
     console.log('The server has started.');

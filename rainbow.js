@@ -24,3 +24,7 @@ function run() {
     showRainbow(frq, off += speed);
 }
 setInterval(run, 50);
+
+module.exports.run = function() {
+    run();
+}
