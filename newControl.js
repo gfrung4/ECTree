@@ -18,5 +18,6 @@ function display(x) {
 display(pattern);
 
 function makeRunner(){
-    
 }
+
+// JSON file must have the following format     

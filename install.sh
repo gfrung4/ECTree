@@ -6,4 +6,15 @@ echo installing ace script editor package
 echo installing express
 #npm -g install express
 echo installing sleep node
-npm -g install sleep
+#npm -g install sleep
+echo updating bone
+#apt-get update
+echo installing mplayer
+#apt-get install mplayer
+echo setting path of audio rc
+#cp asoundrc ~/.asoundrc
+
+
+
+
+#somehow automate adding the 
