@@ -50,7 +50,7 @@ function run(){
             green.run();
             break;
         default:
-            console.log("bad current script");
+            console.log("bad current script (" + current + ")");
     }
     // builtInRequire[0].run();
 }
@@ -72,10 +72,10 @@ io.on('connection', function(socket) {
             time: time,
             timeBetweenPatterns: timeBetweenPatterns
         });
-       
-        
+
+
     });
-    
+
     socket.on('addBuiltInQueue', function(x){
       console.log("adding "+builtInNames[x.num]+" to the queue");
       queueNames.push(builtInNames[x.num]);
@@ -88,7 +88,7 @@ io.on('connection', function(socket) {
             timeBetweenPatterns: timeBetweenPatterns
         });
     });
-    
+
     socket.on('addAudioQueue', function(x){
         console.log("adding" + audioNames[x.num]+"to the audio queue");
         audioQueue.push(x.num);
@@ -119,7 +119,7 @@ function timer(){
             current = queue.shift();//require('./'+queue[0]);
             time = timeBetweenPatterns;
             currentName = queueNames.shift();
-            
+
         }
         if(audioQueue.length > 0){
             console.log("adding to the audio queue");
@@ -130,4 +130,3 @@ function timer(){
 http.listen(887, function() {
     console.log('The server has started.');
 });
-

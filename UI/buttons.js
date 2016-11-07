@@ -1,12 +1,12 @@
 function clickChooseAdd() {
     socket.emit('addBuiltInQueue', {
-        num: $('#scriptSelectBtn input:radio:checked').val()
+        num: parseInt($('#scriptSelectBtn input:radio:checked').val())
     });
 }
 
 function clickChooseAudio() {
     socket.emit('addAudioQueue', {
-        num: $('#audioSelectBtn input:radio:checked').val()
+        num: parseInt($('#audioSelectBtn input:radio:checked').val())
     });
 }
 
