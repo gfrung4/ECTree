@@ -7,17 +7,23 @@ var sleep = require('sleep');
 var pattern = JSON.parse(fs.readFileSync('./pattern.json', 'utf8'));
 var runnerPattern = [];
 
-function display(x) {
-    for(var i=0;i<20;i++){
-        console.log(i);
-        sleep.sleep(1)
-        
-    }
+function display(x,frame) {
+        console.log(frame);
+        var y = x.data[frame].strip;
+        for(var i =0;i<y.length;i++){
+            led.setLed(y[i].l,y[i].r,y[i].g,y[i].b);
+        }
+        led.show();
+        setTimeout(function(){
+            
+            if((frame+1)===x.data.length){
+               display(x,0);   
+            } else {
+                display(x,frame +1);
+            };
+        }, x.data[frame].delay);
 }
 
-display(pattern);
-
-function makeRunner(){
-}
-
-// JSON file must have the following format     
+ module.exports.display = display;
+ 
+display(pattern,0);
