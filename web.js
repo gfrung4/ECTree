@@ -4,6 +4,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var control = require("./newControl.js");
+var fs = require('fs');
 var queue = [];
 var queueNames = [];
 var currentName = 'Rainbow';
@@ -12,41 +14,32 @@ var audioQueue = [];
 var audioQueueNames = [];
 var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silient Night', 'White Christmas', 'Santa Claus is Coming to Town'];
 
-var timeBetweenPatterns = 10; // in seconds
-var builtInScripts = ['rainbow.js', 'runner.js', 'red.js', 'blue.js', 'green.js'];
-var builtInNames = ['Rainbow', 'Runner', 'Red', 'Blue', 'Green'];
+var timeBetweenPatterns = 240; // in seconds
+
+var builtInNames = ['Rainbow', 'Runner', 'Red', 'Blue', 'Green', 'Ping Pong'];
 var current = 0;
 var time = timeBetweenPatterns;
 var timeDelay = 50;
 
-var rainbow = require('./' + builtInScripts[0]);
-var runner = require('./' + builtInScripts[1]);
-var red = require('./' + builtInScripts[2]);
-var blue = require('./' + builtInScripts[3]);
-var green = require('./' + builtInScripts[4]);
+// parse the built in json files and then put them in the array
 
+var rainbow = JSON.parse(fs.readFileSync('./patterns/rainbow.json', 'utf8'));
+var runner = JSON.parse(fs.readFileSync('./patterns/runner.json', 'utf8'));
+var red = JSON.parse(fs.readFileSync('./patterns/red.json', 'utf8'));
+var blue = JSON.parse(fs.readFileSync('./patterns/blue.json', 'utf8'));
+var green = JSON.parse(fs.readFileSync('./patterns/green.json', 'utf8'));
+var pingpong = JSON.parse(fs.readFileSync('./patterns/pingpong.json', 'utf8'));
+
+var builtInScripts = [rainbow, runner, red, blue, green, pingpong];
+
+var firstRun = true;
 function run() {
-    switch (current) {
-        case 0:
-            rainbow.run();
-            break;
-        case 1:
-            runner.run();
-            break;
-        case 2:
-            red.run();
-            break;
-        case 3:
-            blue.run();
-            break;
-        case 4:
-            green.run();
-            break;
-        default:
-            console.log("bad current script (" + current + ")");
-    }
+    // if(!firstRun){
+        control.stop();
+    // }
+    control.display(builtInScripts[current],0)
 }
-
+// run();
 setInterval(run, timeDelay);
 
 app.use('/', express.static(__dirname + '/UI'));
@@ -96,8 +89,9 @@ function timer() {
     if (time <= 0) {
         if (queue.length > 0) {
             //change whats running
-            console.log("changing the queue");
+            
             current = queue.shift(); //require('./'+queue[0]);
+            console.log("changed the queue and current = "+current);
             time = timeBetweenPatterns;
             currentName = queueNames.shift();
         }
