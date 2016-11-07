@@ -8,7 +8,6 @@ var pattern = JSON.parse(fs.readFileSync('./pattern.json', 'utf8'));
 var runnerPattern = [];
 
 function display(x,frame) {
-    // for(var i=0;i<20;i++){
         console.log(frame);
         var y = x.data[frame].strip;
         for(var i =0;i<y.length;i++){
@@ -23,14 +22,8 @@ function display(x,frame) {
                 display(x,frame +1);
             };
         }, x.data[frame].delay);
-        // sleep.sleep(1)
-        
-    // }
 }
 
+ module.exports.display = display;
+ 
 display(pattern,0);
-
-function makeRunner(){
-}
-
-// JSON file must have the following format     
