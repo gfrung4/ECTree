@@ -22,7 +22,6 @@ var time = timeBetweenPatterns;
 var timeDelay = 50;
 
 // parse the built in json files and then put them in the array
-
 var rainbow = JSON.parse(fs.readFileSync('./patterns/rainbow.json', 'utf8'));
 var runner = JSON.parse(fs.readFileSync('./patterns/runner.json', 'utf8'));
 var red = JSON.parse(fs.readFileSync('./patterns/red.json', 'utf8'));
@@ -32,15 +31,12 @@ var pingpong = JSON.parse(fs.readFileSync('./patterns/pingpong.json', 'utf8'));
 
 var builtInScripts = [rainbow, runner, red, blue, green, pingpong];
 
-var firstRun = true;
 function run() {
-    // if(!firstRun){
         control.stop();
-    // }
     control.display(builtInScripts[current],0)
 }
-// run();
-setInterval(run, timeDelay);
+run();
+// setInterval(run, timeDelay);
 
 app.use('/', express.static(__dirname + '/UI'));
 
@@ -94,6 +90,7 @@ function timer() {
             console.log("changed the queue and current = "+current);
             time = timeBetweenPatterns;
             currentName = queueNames.shift();
+            run();
         }
         if (audioQueue.length > 0) {
             console.log("adding to the audio queue");
