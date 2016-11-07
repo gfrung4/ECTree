@@ -66,7 +66,7 @@ function clickAdd() {
     myPattern.name = $("#programName").val();
     $('#codeModalReplace').html($("#codeModal3").html());
 
-    console.log(myPattern);
+    console.log(JSON.stringify(myPattern));
 
     socket.emit('addNew', myPattern);
 }

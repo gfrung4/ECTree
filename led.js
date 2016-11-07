@@ -18,11 +18,13 @@
 
     // Function to set an LEDs color, specifying LED and RGB color
     module.exports.setLed = function(led, red, green, blue) {
-        strip[led] = {
-            r: red,
-            g: green,
-            b: blue
-        };
+        if (led < NUMBER_OF_LEDS) {
+            strip[led] = {
+                r: red,
+                g: green,
+                b: blue
+            };
+        }
     };
 
     // Function to update the LED string
