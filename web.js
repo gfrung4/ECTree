@@ -6,13 +6,16 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var control = require("./newControl.js");
 var fs = require('fs');
+var music = require("./music.js");
+
 var queue = [];
 var queueNames = [];
 var currentName = 'Rainbow';
 
-var audioQueue = [];
+var audioQueue = ["JingleBells","Silentnight"];
 var audioQueueNames = [];
 var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silient Night', 'White Christmas', 'Santa Claus is Coming to Town'];
+var audioIsPlaying = false;
 
 var timeBetweenPatterns = 240; // in seconds
 
@@ -61,7 +64,7 @@ io.on('connection', function(socket) {
         socket.emit('getQueue', {
             current: currentName,
             queue: queueNames,
-            time: time,
+            time: time, 
             timeBetweenPatterns: timeBetweenPatterns
         });
     });
@@ -76,6 +79,7 @@ io.on('connection', function(socket) {
         // Code here will be run when a user disconnects.
         console.log("[SOCKET] Connection ended.");
     });
+    
 });
 
 setInterval(timer, 1000);
@@ -92,11 +96,20 @@ function timer() {
             currentName = queueNames.shift();
             run();
         }
-        if (audioQueue.length > 0) {
-            console.log("adding to the audio queue");
-        }
+        // if (audioQueue.length > 0) {
+        //     console.log("adding to the audio queue");
+        //     music.play(audioQueue.shift());
+        // }
     } else {
         time = 0;
+    }
+    if (! audioIsPlaying){
+        console.log("audio is not playing");
+        if (audioQueue.length > 0) {
+            //console.log("adding to the audio queue");
+            audioIsPlaying = true;
+            music.play(audioQueue.shift());
+        }
     }
 }
 

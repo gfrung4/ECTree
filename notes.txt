@@ -1,0 +1,8 @@
+
+Audio Problem: 
+
+So I can get the first song to play and I have a global variable in web.js 
+called audioIsPlaying I need a way to find out when the audio is done playing 
+so that I can change that variable once the variable is changed the code is 
+already in place to play the next song in the audioqueue
+
