@@ -6,3 +6,17 @@ called audioIsPlaying I need a way to find out when the audio is done playing
 so that I can change that variable once the variable is changed the code is 
 already in place to play the next song in the audioqueue
 
+Lights Queue:
+
+There is a problem with the timing and the negative numbers are still showing
+up in the UI plus the patterns are not running for the right amount of time
+
+Audio Queue: 
+
+there is a socket.emit that uses 'getAudioQueue' that sends the audio queue out
+when it recieves something that is sent to it. take a look at it not sure 
+what to do about the time and the time between songs. We could look up the 
+length of each song and add another array with those times or we could figure
+out how to get it out of the file because it does display that info in the 
+console while it is playing, or we could just not worry about it and just send
+a signal to change it once a song is done playing. 

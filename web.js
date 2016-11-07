@@ -12,10 +12,12 @@ var queue = [];
 var queueNames = [];
 var currentName = 'Rainbow';
 
-var audioQueue = ["JingleBells","Silentnight"];
+var audioQueue = [];//"JingleBells","Silentnight"];
 var audioQueueNames = [];
 var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silient Night', 'White Christmas', 'Santa Claus is Coming to Town'];
+var audio = ["Christmastree", "AwayinaManger", "CelineDion-SoThisIsChristmas", "JingleBells", "Silientnight", "BingCrosby-WhiteChristmas", "SantaClausIsComingtotown", ]
 var audioIsPlaying = false;
+var currentAudioName = "No Selected Audio";
 
 var timeBetweenPatterns = 240; // in seconds
 
@@ -70,9 +72,15 @@ io.on('connection', function(socket) {
     });
 
     socket.on('addAudioQueue', function(x) {
-        console.log("adding" + audioNames[x.num] + "to the audio queue");
-        audioQueue.push(x.num);
+        console.log("adding" + audio[x.num] + "to the audio queue");
+        audioQueue.push(audio[x.num]);
         audioQueueNames.push(audioNames[x.num]);
+        socket.emit('getAudioQueue', {
+            current: currentAudioName,
+            queue: audioQueueNames,
+            time: time, // this should be time remaining in song
+            timeBetweenPatterns: timeBetweenPatterns //this should be the length of each song
+        });
     });
 
     socket.on('disconnect', function() {
@@ -96,17 +104,13 @@ function timer() {
             currentName = queueNames.shift();
             run();
         }
-        // if (audioQueue.length > 0) {
-        //     console.log("adding to the audio queue");
-        //     music.play(audioQueue.shift());
-        // }
     } else {
         time = 0;
     }
     if (! audioIsPlaying){
-        console.log("audio is not playing");
+        // console.log("audio is not playing");
         if (audioQueue.length > 0) {
-            //console.log("adding to the audio queue");
+            currentAudioName = audioQueueNames.shift();
             audioIsPlaying = true;
             music.play(audioQueue.shift());
         }
