@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1 class="display-3">ECE Dept Christmas Tree</h1>
+            <p class="lead">This is a way for everyone to control the pattern of the ECE department Christmas Tree.</p>
+            <hr class="my-2">
+            <p>You can either choose a preselected pattern or write some code using the given functions to change the lights. </p>
+            <p>Once you have made your decision please click the "Add to Queue" button and you pattern will be played when it is it's turn. </p>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#ChooseScriptModal">Choose Script</button>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#AudioModal">Select Audio </button>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="clickScript()">Write Script</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Light Queue</h1>
+                <table class="table">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th id="rowNameCurrent"> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="queueTable">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h1>Audio Queue</h1>
+                <table class="table">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th id="rowNameCurrentAudio"> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="queueTableAudio">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="ChooseScriptModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ChooseScriptModalLabel">Choose Script</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-group-vertical">
+                        <div class="btn-group" id="scriptSelectBtn" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="rainbow" value=0 checked> Rainbow</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="runner" value=1> Runner</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="red" value=2> Red</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="blue" value=3> Blue</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="green" value=4> Green</input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="clickChooseAdd()" class="btn btn-primary">Add to Queue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AudioModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Select Audio</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-group-vertical">
+                        <div class="btn-group" id="audioSelectBtn" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="christmasTree" value=0 checked> Christmas Tree</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="AwayInaManger" value=1>Away In a Manger</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="SoThisIsChristmas" value=2>So this is Christmas</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="JingleBells" value=3>Jingle Bells</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="silientNight" value=4>Silient Night</input>
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="whiteChristmas" value=5>White Christmas</input></label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="santaClausIsComingToTown" value=6>Santa Claus is Coming to Town</input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="clickChooseAudio()" class="btn btn-primary">Add to Queue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="codeModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Write Script</h4>
+                </div>
+                <span id="codeModalReplace">
+                <div class="modal-body">
+                    <div id="editor"></div>
+                    <br>
+                    <canvas id="lightPreview" width="100" height="1" style="width:100%"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" onclick="clickGenerate(0)" class="btn btn-info">Preview</button>
+                    <button type="button" onclick="clickGenerate(1)" class="btn btn-primary">Generate</button>
+                </div>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="buttons.js" type="text/javascript" charset="utf-8"></script>
+    <script src="runner.js" type="text/javascript" charset="utf-8"></script>
+    <script src="queue.js" type="text/javascript" charset="utf-8"></script>
+
+    <script id="codeModal1" type="text/plain">
+        <div class="modal-body">
+            <div id="editor"></div>
+            <br>
+            <canvas id="lightPreview" width="100" height="1" style="width:100%"></canvas>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" onclick="clickGenerate(0)" class="btn btn-info">Preview</button>
+            <button type="button" onclick="clickGenerate(1)" class="btn btn-primary">Generate</button>
+        </div>
+    </script>
+
+    <script id="codeModal2" type="text/plain">
+        <div class="modal-body">
+            <p>The above preview shows how your light program will appear. If it does not look as you intended, click <b>Back</b> below to edit your code.</p>
+            <canvas id="lightPreview" width="100" height="1" style="width:100%"></canvas>
+            <hr>
+            <p>Give your program a descriptive name so others can recognize it.</p>
+            <div class="input-group">
+                <span class="input-group-addon">Program Name </span>
+                <input id="programName" type="text" class="form-control" placeholder="My Program">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" onclick="clickBack()" class="btn btn-secondary">Back</button>
+            <button type="button" onclick="clickAdd()" class="btn btn-primary">Add to Queue</button>
+        </div>
+    </script>
+
+    <script id="codeModal3" type="text/plain">
+        <div class="modal-body" style="text-align:center;font-size:48px;">
+            <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+        </div>
+
+        <div class="modal-footer">
+        </div>
+    </script>
+
+    <script id="queueTableRow" type="text/plain">
+        <tr id="row[ID]">
+            <td id="rowName[ID]"></td>
+            <td id="rowTime[ID]">[TIME]</td>
+        </tr>
+    </script>
+</body>
+
+</html>
