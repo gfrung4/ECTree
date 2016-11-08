@@ -15,3 +15,8 @@ socket.on("connect", function() {
     // Code here will be run when the user is connected.
     socket.emit("getQueue");
 });
+
+socket.on("addSuccess", function() {
+    $("#ChooseScriptModal").modal('hide');
+    $("#codeModal").modal('hide');
+});

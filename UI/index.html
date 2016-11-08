@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#ChooseScriptModal">Choose Script</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="clickChoose()">Choose Script</button>
             </div>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#AudioModal">Select Audio </button>
@@ -40,7 +40,7 @@
                     <thead class="thead-inverse">
                         <tr>
                             <th id="rowNameCurrent"> </th>
-                            <th> </th>
+                            <th style="text-align: right;">Now Playing</th>
                         </tr>
                     </thead>
                     <tbody id="queueTable">
@@ -71,31 +71,19 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title" id="ChooseScriptModalLabel">Choose Script</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="btn-group-vertical">
-                        <div class="btn-group" id="scriptSelectBtn" data-toggle="buttons">
-                            <label class="btn btn-secondary active">
-                                <input type="radio" name="options" id="rainbow" value=0 checked> Rainbow</input>
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="runner" value=1> Runner</input>
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="red" value=2> Red</input>
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="blue" value=3> Blue</input>
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="green" value=4> Green</input>
-                            </label>
+                <span id="chooseScriptModalContent">
+                    <div class="modal-body">
+                        <p>Enter the program ID of a program to run it:</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">Program ID </span>
+                            <input id="programId" type="text" class="form-control" placeholder="#"></input>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="clickChooseAdd()" class="btn btn-primary">Add to Queue</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="clickChooseAdd()" class="btn btn-primary">Add to Queue</button>
+                    </div>
+                </span>
             </div>
         </div>
     </div>
@@ -215,10 +203,24 @@
         </div>
     </script>
 
+    <script id="chooseScriptModalOriginal" type="text/plain">
+        <div class="modal-body">
+            <p>Enter the program ID of a program to run it:</p>
+            <div class="input-group">
+                <span class="input-group-addon">Program ID </span>
+                <input id="programId" type="text" class="form-control" placeholder="#"></input>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" onclick="clickChooseAdd()" class="btn btn-primary">Add to Queue</button>
+        </div>
+    </script>
+
     <script id="queueTableRow" type="text/plain">
         <tr id="row[ID]">
             <td id="rowName[ID]"></td>
-            <td id="rowTime[ID]">[TIME]</td>
+            <td id="rowTime[ID]" style="text-align: right;">[TIME]</td>
         </tr>
     </script>
 </body>

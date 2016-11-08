@@ -8,40 +8,51 @@ var control = require("./newControl.js");
 var fs = require('fs');
 var music = require("./music.js");
 
+// Find all the program files in the "prgrams" folder
+var programFiles = fs.readdirSync("programs");
+for (var i = 0, l = programFiles.length; i < l; i++) {
+    if (programFiles[i].length <= 5 || programFiles[i].substring(programFiles[i].length - 5) !== ".json") {
+        programFiles.splice(i, 1);
+        i--;
+        l--;
+    } else {
+        programFiles[i] = parseInt(programFiles[i].substring(0, programFiles[i].length - 5));
+    }
+}
+
+// Calculate the ID of the next program to be submitted
+var nextId = Math.max.apply(null, programFiles) + 1;
+
+// Store the memory usage before loading all the programs
+var memBefore = process.memoryUsage().heapUsed;
+
+// Load the programs
+console.log("Loading " + programFiles.length + " programs...");
+var programs = [];
+for (var i = 0, l = programFiles.length; i < l; i++) {
+    programs[programFiles[i].toString()] = JSON.parse(fs.readFileSync("programs/" + programFiles[i] + ".json", "utf8"));
+}
+
+// Calculate the memory used by the programs
+var memAfter = process.memoryUsage().heapUsed;
+var memUsed = Math.floor((memAfter - memBefore) / 100000) / 10;
+console.log("Done.  " + programFiles.length + " loaded programs use " + memUsed + " MB of RAM.");
+console.log("The next program ID will be " + nextId + ".");
+
 var queue = [];
 var queueNames = [];
-var currentName = 'Rainbow';
+var currentProgram = 5;
+var currentProgramName = programs[currentProgram].name;
+var timeBetweenPatterns = 30;
+var time = 0;
+control.setProgram(programs[currentProgram]);
 
-var audioQueue = [];//"JingleBells","Silentnight"];
+var audioQueue = []; //"JingleBells","Silentnight"];
 var audioQueueNames = [];
 var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silient Night', 'White Christmas', 'Santa Claus is Coming to Town'];
-var audio = ["Christmastree", "AwayinaManger", "CelineDion-SoThisIsChristmas", "JingleBells", "Silientnight", "BingCrosby-WhiteChristmas", "SantaClausIsComingtotown", ]
+var audio = ["Christmastree", "AwayinaManger", "CelineDion-SoThisIsChristmas", "JingleBells", "Silientnight", "BingCrosby-WhiteChristmas", "SantaClausIsComingtotown"];
 var audioIsPlaying = false;
 var currentAudioName = "No Selected Audio";
-
-var timeBetweenPatterns = 240; // in seconds
-
-var builtInNames = ['Rainbow', 'Runner', 'Red', 'Blue', 'Green', 'Ping Pong'];
-var current = 0;
-var time = timeBetweenPatterns;
-var timeDelay = 50;
-
-// parse the built in json files and then put them in the array
-var rainbow = JSON.parse(fs.readFileSync('./patterns/rainbow.json', 'utf8'));
-var runner = JSON.parse(fs.readFileSync('./patterns/runner.json', 'utf8'));
-var red = JSON.parse(fs.readFileSync('./patterns/red.json', 'utf8'));
-var blue = JSON.parse(fs.readFileSync('./patterns/blue.json', 'utf8'));
-var green = JSON.parse(fs.readFileSync('./patterns/green.json', 'utf8'));
-var pingpong = JSON.parse(fs.readFileSync('./patterns/pingpong.json', 'utf8'));
-
-var builtInScripts = [rainbow, runner, red, blue, green, pingpong];
-
-function run() {
-        control.stop();
-    control.display(builtInScripts[current],0)
-}
-run();
-// setInterval(run, timeDelay);
 
 app.use('/', express.static(__dirname + '/UI'));
 
@@ -51,24 +62,47 @@ io.on('connection', function(socket) {
     socket.on('getQueue', function() {
         console.log("client requested the queue");
         socket.emit('getQueue', {
-            current: currentName,
+            current: currentProgramName,
             queue: queueNames,
             time: time,
             timeBetweenPatterns: timeBetweenPatterns
         });
     });
 
-    socket.on('addBuiltInQueue', function(x) {
-        console.log("adding " + builtInNames[x.num] + " to the queue");
-        queueNames.push(builtInNames[x.num]);
-        queue.push(x.num); //builtInScripts[x.num]);
-        console.log("The new queue is " + queueNames);
-        socket.emit('getQueue', {
-            current: currentName,
-            queue: queueNames,
-            time: time, 
-            timeBetweenPatterns: timeBetweenPatterns
+    socket.on('addNew', function(data) {
+        console.log("Got add new.");
+        console.log(data);
+        var thisId = nextId++;
+        fs.writeFile("programs/" + thisId + ".json", JSON.stringify(data), function(err) {
+            if (err) {
+                throw err;
+            }
+            programs[thisId.toString()] = data;
+            queue.push(thisId);
+            queueNames.push(data.name);
+            socket.emit('addSuccess');
+            io.sockets.emit('getQueue', {
+                current: currentProgramName,
+                queue: queueNames,
+                time: time,
+                timeBetweenPatterns: timeBetweenPatterns
+            });
         });
+    });
+
+    socket.on('addExisting', function(number) {
+        console.log("Got add existing (" + number + ").");
+        if (programs[number] !== undefined) {
+            queue.push(number);
+            queueNames.push(programs[number].name);
+            socket.emit('addSuccess');
+            io.sockets.emit('getQueue', {
+                current: currentProgramName,
+                queue: queueNames,
+                time: time,
+                timeBetweenPatterns: timeBetweenPatterns
+            });
+        }
     });
 
     socket.on('addAudioQueue', function(x) {
@@ -87,28 +121,26 @@ io.on('connection', function(socket) {
         // Code here will be run when a user disconnects.
         console.log("[SOCKET] Connection ended.");
     });
-    
 });
 
-setInterval(timer, 1000);
-
 function timer() {
-    time -= 1;
+    time--;
     if (time <= 0) {
         if (queue.length > 0) {
-            //change whats running
-            
-            current = queue.shift(); //require('./'+queue[0]);
-            console.log("changed the queue and current = "+current);
+            currentProgram = queue.shift();
+            currentProgramName = queueNames.shift();
+            console.log("Time expired.  Next program: " + currentProgramName);
+
+            control.setProgram(programs[currentProgram]);
+
             time = timeBetweenPatterns;
-            currentName = queueNames.shift();
-            run();
+        } else {
+            console.log("Time expired, but no new pattern in queue!");
+            time = 0;
         }
-    } else {
-        time = 0;
     }
-    if (! audioIsPlaying){
-        // console.log("audio is not playing");
+
+    if (!audioIsPlaying) {
         if (audioQueue.length > 0) {
             currentAudioName = audioQueueNames.shift();
             audioIsPlaying = true;
@@ -116,7 +148,8 @@ function timer() {
         }
     }
 }
+setInterval(timer, 1000);
 
-http.listen(887, function() {
+http.listen(888, function() {
     console.log('The server has started.');
 });

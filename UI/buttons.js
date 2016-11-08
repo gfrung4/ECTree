@@ -1,7 +1,6 @@
 function clickChooseAdd() {
-    socket.emit('addBuiltInQueue', {
-        num: parseInt($('#scriptSelectBtn input:radio:checked').val())
-    });
+    socket.emit('addExisting', parseInt($('#programId').val()));
+    $("#chooseScriptModalContent").html($("#codeModal3").html());
 }
 
 function clickChooseAudio() {
@@ -18,4 +17,9 @@ function clickScript() {
     editor.getSession().setMode("ace/mode/javascript");
     editor.setShowPrintMargin(false);
     editor.setFontSize(18);
+}
+
+function clickChoose() {
+  $('#chooseScriptModalContent').html($("#chooseScriptModalOriginal").html());
+  $('#ChooseScriptModal').modal('show');
 }

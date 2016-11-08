@@ -30,7 +30,7 @@ function updateQueue() {
 
 function queueCountdown() {
     countdown--;
-    if (countdown < 0) {
+    if (countdown <= 0) {
         current = queue.shift();
         countdown = timePerPattern;
         updateQueue();
@@ -67,5 +67,14 @@ function setCurrentName(name) {
 }
 
 function setTime(row, time) {
-    $("#rowTime" + row).text(time);
+    $("#rowTime" + row).text(formatTime(time));
+}
+
+function formatTime(time) {
+    var minutes = Math.floor(time / 60);
+    var seconds = time - minutes * 60;
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return minutes + ":" + seconds;
 }
