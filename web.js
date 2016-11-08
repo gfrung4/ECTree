@@ -6,7 +6,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var control = require("./newControl.js");
 var fs = require('fs');
-var music = require("./music.js");
+// var music = require("./music.js");
+// var playerSocket;
 
 // Find all the program files in the "prgrams" folder
 var programFiles = fs.readdirSync("programs");
@@ -58,6 +59,7 @@ app.use('/', express.static(__dirname + '/UI'));
 
 io.on('connection', function(socket) {
     // Code here will be run when a user connects.
+    playerSocket = socket;
     console.log("[SOCKET] Connection started.");
     socket.on('getQueue', function() {
         console.log("client requested the queue");
@@ -121,6 +123,11 @@ io.on('connection', function(socket) {
         // Code here will be run when a user disconnects.
         console.log("[SOCKET] Connection ended.");
     });
+    
+    // socket.on('audioDone',function(){
+    //     audioIsPlaying = false;
+    //     console.log("setting audioIsPlaying to false");
+    // });
 });
 
 function timer() {
@@ -144,7 +151,7 @@ function timer() {
         if (audioQueue.length > 0) {
             currentAudioName = audioQueueNames.shift();
             audioIsPlaying = true;
-            music.play(audioQueue.shift(),io);
+            play(audioQueue.shift());
         }
     }
 }
@@ -153,3 +160,27 @@ setInterval(timer, 1000);
 http.listen(888, function() {
     console.log('The server has started.');
 });
+
+// var EOF = "End of file"
+
+function play(name){
+    const spawn = require('child_process').spawn;
+    const player = spawn('mplayer', ['xSongs/'+name+'.mp3']);
+    
+    player.stdout.on('data', function(data) {
+        // if(String(data).indexOf(EOF) >= 0) {
+        //      audioIsPlaying = false;
+        //      console.log("found end of file");
+        // }
+    });
+
+    player.stderr.on('data', function(data) {
+    //   console.log("stderr: "+ data);
+    }); 
+
+    player.on('close', function(code) {
+        console.log("child process exited with code " + code);
+        audioIsPlaying = false;
+    });
+}
+
