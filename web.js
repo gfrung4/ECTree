@@ -135,7 +135,7 @@ function timer() {
 
             time = timeBetweenPatterns;
         } else {
-            console.log("Time expired, but no new pattern in queue!");
+            // console.log("Time expired, but no new pattern in queue!");
             time = 0;
         }
     }
@@ -144,7 +144,7 @@ function timer() {
         if (audioQueue.length > 0) {
             currentAudioName = audioQueueNames.shift();
             audioIsPlaying = true;
-            music.play(audioQueue.shift());
+            music.play(audioQueue.shift(),io);
         }
     }
 }
