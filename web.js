@@ -108,7 +108,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('addAudioQueue', function(x) {
-        console.log("adding" + audio[x.num] + "to the audio queue");
+        console.log("adding " + audio[x.num] + " to the audio queue");
         audioQueue.push(audio[x.num]);
         audioQueueNames.push(audioNames[x.num]);
         socket.emit('getAudioQueue', {
