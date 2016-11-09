@@ -31,8 +31,12 @@ function updateQueue() {
 function queueCountdown() {
     countdown--;
     if (countdown <= 0) {
-        current = queue.shift();
-        countdown = timePerPattern;
+        if (queue.length !== 0) {
+            current = queue.shift();
+            countdown = timePerPattern;
+        } else {
+            countdown = 0;
+        }
         updateQueue();
     }
     var thisTime = countdown;

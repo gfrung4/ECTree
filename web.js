@@ -50,10 +50,14 @@ control.setProgram(programs[currentProgram]);
 
 var audioQueue = []; //"JingleBells","Silentnight"];
 var audioQueueNames = [];
-var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silient Night', 'White Christmas', 'Santa Claus is Coming to Town'];
-var audio = ["Christmastree", "AwayinaManger", "CelineDion-SoThisIsChristmas", "JingleBells", "Silientnight", "BingCrosby-WhiteChristmas", "SantaClausIsComingtotown"];
+var audioQueueLengths = [];
+var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silent Night', 'White Christmas', 'Santa Claus is Coming to Town'];
+var audio = ["Christmastree", "AwayinaManger", "CelineDion-SoThisIsChristmas", "JingleBells", "Silentnight", "BingCrosby-WhiteChristmas", "SantaClausIsComingtotown"];
+var audioLength = [128, 68, 254, 133, 193, 180, 124];
 var audioIsPlaying = false;
-var currentAudioName = "No Selected Audio";
+var currentAudioName = " ";
+var audioTime = 0;
+var currentAudioLength = 0;
 
 app.use('/', express.static(__dirname + '/UI'));
 
@@ -68,6 +72,12 @@ io.on('connection', function(socket) {
             queue: queueNames,
             time: time,
             timeBetweenPatterns: timeBetweenPatterns
+        });
+        socket.emit('getAudioQueue', {
+            current: currentAudioName,
+            queue: audioQueueNames,
+            time: currentAudioLength - audioTime, // this should be time remaining in song
+            timeBetweenPatterns: audioQueueLengths //this should be the length of each song
         });
     });
 
@@ -111,11 +121,13 @@ io.on('connection', function(socket) {
         console.log("adding " + audio[x.num] + " to the audio queue");
         audioQueue.push(audio[x.num]);
         audioQueueNames.push(audioNames[x.num]);
-        socket.emit('getAudioQueue', {
+        audioQueueLengths.push(audioLength[x.num]);
+        socket.emit('addSuccess');
+        io.sockets.emit('getAudioQueue', {
             current: currentAudioName,
             queue: audioQueueNames,
-            time: time, // this should be time remaining in song
-            timeBetweenPatterns: timeBetweenPatterns //this should be the length of each song
+            time: currentAudioLength - audioTime, // this should be time remaining in song
+            timeBetweenPatterns: audioQueueLengths //this should be the length of each song
         });
     });
 
@@ -123,11 +135,6 @@ io.on('connection', function(socket) {
         // Code here will be run when a user disconnects.
         console.log("[SOCKET] Connection ended.");
     });
-    
-    // socket.on('audioDone',function(){
-    //     audioIsPlaying = false;
-    //     console.log("setting audioIsPlaying to false");
-    // });
 });
 
 function timer() {
@@ -150,10 +157,26 @@ function timer() {
     if (!audioIsPlaying) {
         if (audioQueue.length > 0) {
             currentAudioName = audioQueueNames.shift();
+            currentAudioLength = audioQueueLengths.shift();
+            audioTime = 0;
             audioIsPlaying = true;
             play(audioQueue.shift());
+        } else {
+            currentAudioName = " ";
+            currentAudioLength = 0;
+            audioTime = 0;
         }
     }
+
+    //console.log("Audio status: ");
+    //if(audioIsPlaying) {
+    //    console.log("Playing: " + currentAudioName + " ( " + audioTime + " / " + currentAudioLength + " )");
+    //    console.log("Queue: ");
+    //    console.log(audioQueueNames);
+    //    console.log(audioQueueLengths);
+    //  } else {
+    //    console.log("Queue empty.");
+    //  }
 }
 setInterval(timer, 1000);
 
@@ -163,10 +186,10 @@ http.listen(888, function() {
 
 // var EOF = "End of file"
 
-function play(name){
+function play(name) {
     const spawn = require('child_process').spawn;
-    const player = spawn('mplayer', ['xSongs/'+name+'.mp3']);
-    
+    const player = spawn('mplayer', ['xSongs/' + name + '.mp3']);
+
     player.stdout.on('data', function(data) {
         // if(String(data).indexOf(EOF) >= 0) {
         //      audioIsPlaying = false;
@@ -175,12 +198,24 @@ function play(name){
     });
 
     player.stderr.on('data', function(data) {
-    //   console.log("stderr: "+ data);
-    }); 
+        data = data.toString('utf8');
+        if (data.substring(0, 2) === "A:") {
+            data = data.split(" ");
+            for (var i = 0, l = data.length; i < l; i++) {
+                if (data[i].length === 0) {
+                    data.splice(i, 1);
+                    i--;
+                    l--;
+                }
+            }
+            audioTime = parseInt(data[1]);
+        }
+
+
+    });
 
     player.on('close', function(code) {
         console.log("child process exited with code " + code);
         audioIsPlaying = false;
     });
 }
-

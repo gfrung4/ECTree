@@ -53,8 +53,8 @@
                 <table class="table">
                     <thead class="thead-inverse">
                         <tr>
-                            <th id="rowNameCurrentAudio"> </th>
-                            <th> </th>
+                            <th id="audioRowNameCurrent"> </th>
+                            <th style="text-align: right;">Now Playing</th>
                         </tr>
                     </thead>
                     <tbody id="queueTableAudio">
@@ -163,7 +163,7 @@
     <script src="runner.js" type="text/javascript" charset="utf-8"></script>
     <script src="queue.js" type="text/javascript" charset="utf-8"></script>
     <script src="queueAudio.js" type="text/javascript" charset="utf-8"></script>
-    
+
 
     <script id="codeModal1" type="text/plain">
         <div class="modal-body">
@@ -225,6 +225,14 @@
             <td id="rowTime[ID]" style="text-align: right;">[TIME]</td>
         </tr>
     </script>
+
+    <script id="audioQueueTableRow" type="text/plain">
+        <tr id="audioRow[ID]">
+            <td id="audioRowName[ID]"></td>
+            <td id="audioRowTime[ID]" style="text-align: right;">[TIME]</td>
+        </tr>
+    </script>
+
 </body>
 
 </html>
