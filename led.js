@@ -1,6 +1,6 @@
 (function() {
     // Change this to change the number of LEDs you're controlling
-    var NUMBER_OF_LEDS = 160;
+    var NUMBER_OF_LEDS = 160*2;
 
     // For writing to SPI
     var fs = require('fs');

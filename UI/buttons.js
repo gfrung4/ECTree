@@ -17,6 +17,9 @@ function clickScript() {
     editor.getSession().setMode("ace/mode/javascript");
     editor.setShowPrintMargin(false);
     editor.setFontSize(18);
+    editor.insert("// These are the two functions that you will need to use to write your code\n");
+    editor.insert("// setPixel(led, red, green, blue); this is used to set an led to a certain color\n");
+    editor.insert("// delay(t); this is a delay where t is in millaseconds\n")
 }
 
 function clickChoose() {
