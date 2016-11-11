@@ -1,4 +1,5 @@
 socket.on("getQueue", function(res) {
+    console.log("recieved light queue");
     current = res.current;
     queue = res.queue;
     countdown = res.time;
@@ -30,15 +31,10 @@ function updateQueue() {
 
 function queueCountdown() {
     countdown--;
-    if (countdown <= 0) {
-        if (queue.length !== 0) {
-            current = queue.shift();
-            countdown = timePerPattern;
-        } else {
-            countdown = 0;
-        }
-        updateQueue();
+    if (countdown < 0) {
+        countdown = 0;
     }
+
     var thisTime = countdown;
     for (var i = 0, l = queue.length; i < l; i++) {
         setTime(i, thisTime);

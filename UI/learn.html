@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="#">EC-Tree</a>
+            <ul class="nav navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Control</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Learn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item float-xs-right" style="font-size:24px">
+                    <a class="nav-link" style="padding:0px" href="https://github.com/gfrung4/ECTree"><i class="fa fa-github"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div id="editor"></div>
+                <br>
+                <canvas id="lightPreview" width="100" height="1" style="width:100%"></canvas>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div id="tutorialContent" class="card-block">
+                        <h4 class="card-title">Tutorial</h4>
+                        <p class="card-text">This quick tutorial will only take a few minutes, and once you're done you'll be writing amazing light shows for our Christmas tree!<br><br>We'll walk you through writing your first program step-by-step.<br><br>Click <b>Start</b> to start the tutorial.</p>
+                        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Start</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/plain" id="tutorialCard1">
+        <h4 class="card-title">Tutorial</h4>
+        <p class="card-text">To program your light sequence, you will be writing code in the JavaScript programming language. <br><br>Let&#8217;s get started by turning on one light.</p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard2">
+        <h4 class="card-title">Setting Lights</h4>
+        <p class="card-text">There are <b>320</b> individual lights on the tree. We provide you with a function that can set the color of any light. It looks like this:
+            <br><br>
+            <code>setLight(light, red, green, blue)</code>
+            <br><br>
+        </p>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>light</th>
+                    <td>The index of the light to set. Use 0 for the first light (starting at the bottom of the tree) and 319 for the last light (at the top).</td>
+                </tr>
+                <tr>
+                    <th>red</th>
+                    <td>The amount of red light, where 127 is bright red and 0 is no red.</td>
+                </tr>
+                <tr>
+                    <th>green</th>
+                    <td>The amount of green light, where 127 is bright green and 0 is no green.</td>
+                </tr>
+                <tr>
+                    <th>blue</th>
+                    <td>The amount of blue light, where 127 is bright blue and 0 is no blue.</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard3">
+        <h4 class="card-title">Setting Lights</h4>
+        <p class="card-text">Let's use the <code>setLight</code> function to turn on light <b>160</b>, somewhere near the middle of the tree, and set it to glow <b>red</b>.
+            <br><br>
+            <code>setLight(160, 64, 0, 0);</code>
+            <br><br> Go ahead and type that line over in the code space to the left. We'll continue with the tutorial automatically once you've done it!<br><br>Be sure to include the semicolon (;) at the end of the line!
+        </p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard4">
+        <h4 class="card-title">Waiting</h4>
+        <p class="card-text">We'll also have to wait some time. Do it like this:
+            <br><br>
+            <code>delay(ms)</code>
+            <br>
+        </p>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>ms</th>
+                    <td>Time in milliseconds to wait.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="card-text">
+            Go ahead and add a <b>half second</b> delay. One second is <b>1000</b> milliseconds, so half a second is <b>500</b> millseconds. Make this the second line of your code:
+            <br><br>
+            <code>delay(500);</code>
+            <br><br> Again, we'll go on once you're done!
+        </p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard5">
+        <h4 class="card-title">Making a Pattern</h4>
+        <p class="card-text">Now let's turn on the light to the lights to the left and right of light 160. That would be lights <b>159</b> and <b>161</b>! <br><br>We need to add two lines of code to do this. Add them after your delay.
+            <br><br>
+            <pre><code>setLight(159, 64, 0, 0);
+setLight(161, 64, 0, 0);</code></pre></p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard6">
+        <h4 class="card-title">Making a Pattern</h4>
+        <p class="card-text">On your own, add another <b>half second</b> delay.<br><br>If you need a hint, just copy the other <code>delay</code> line you have written.<br><br>Don't forget to include a semicolon at the end of the line you add.</p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard7">
+        <h4 class="card-title">Making a Pattern</h4>
+        <p class="card-text">Let's continue the pattern by turning on lights <b>158</b> and <b>162</b>.<br><br>Go ahead and add two lines to the end of your code to turn these lights on. If you need a hint, look at the <code>setLight</code> lines you have written.<br><br>Again,
+            don't forget to include a semicolon at the end of each of the lines you add!</p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard8">
+        <h4 class="card-title">Making a Pattern</h4>
+        <p class="card-text">On your own, add another <b>half second</b> delay.<br><br>Then we'll take a look at what your code does so far!</p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard9">
+        <h4 class="card-title">Making a Pattern</h4>
+        <p class="card-text">We've included a preview function that allows you to see what your code does before sending it to the tree. Take a look at the preview.<br><br>We've started a pattern! The middle light turns on first, then the ones to the left and right of it,
+            then the ones to the left and right of that.</p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard10">
+        <h4 class="card-title">Looping</h4>
+        <p class="card-text">Continuing the pattern would get very tedious if we had to keep adding lines. Luckily, we can use a loop. Look at the code a different way.
+            <pre><code>setLight(160 - 0, 64, 0, 0);
+setLight(160 + 0, 64, 0, 0);
+delay(500);
+
+setLight(160 - 1, 64, 0, 0);
+setLight(160 + 1, 64, 0, 0);
+delay(500);
+
+setLight(160 - 2, 64, 0, 0);
+setLight(160 + 2, 64, 0, 0);
+delay(500);</code></pre><br>This is the same as the code you've written so far, but with some of the numbers replaced with math!<br><br>Notice all three sections are the same, except the 0, 1, and 2.</p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard11">
+        <h4 class="card-title">Looping</h4>
+        <p class="card-text">We can replace this:
+            <pre><code>setLight(160 - 0, 64, 0, 0);
+setLight(160 + 0, 64, 0, 0);
+delay(500);
+
+setLight(160 - 1, 64, 0, 0);
+setLight(160 + 1, 64, 0, 0);
+delay(500);
+
+setLight(160 - 2, 64, 0, 0);
+setLight(160 + 2, 64, 0, 0);
+delay(500);</code></pre>With a loop:<br><br>
+            <pre><code>for(var i = 0; i <= 2; i++) {
+    setLight(160 - i, 64, 0, 0);
+    setLight(160 + i, 64, 0, 0);
+    delay(500);
+}</code></pre>Go ahead replace the code you have so far with the loop version.<br><br>We'll continue with the tutorial once you're done.</p>
+    </script>
+
+
+    <script type="text/plain" id="tutorialCard12">
+        <h4 class="card-title">Looping</h4>
+        <p class="card-text">The <code>i = 0</code> portion of our loop tells the computer to start with i equal to zero.
+<br><br>
+        The <code>i <= 2</code> part means continue until i is equal to 2.
+<br><br>
+        The <code>i++</code> means increase i by one each time.
+<br><br>
+        All together, the code in the loop will run once with i equal to 0, then again with i equal to 1, and again with i equal to 2.
+<br><br>
+        With a loop, we can easily expand our pattern to cover all the lights.  Just change the <code>i <= 2</code> to <code>i <= 160</code>.  Then the code in the loop will run for i = 3, i = 4, i = 5, and on all the way to i = 160.
+<br><br>
+        Make that change now.  We'll go on when you're done.<p>
+    </script>
+
+
+    <script type="text/plain" id="tutorialCard13">
+        <h4 class="card-title">Looping</h4>
+        <p class="card-text">This looks nice, but it is very slow!  Since the <code>delay(500)</code> is in the loop, we can change it once and change all the delays!<br><br>Replace <code>delay(500)</code> with <code>delay(100)</code>.  That will make it five times faster.</p>
+    </script>
+
+    <script type="text/plain" id="tutorialCard14">
+        <h4 class="card-title">Saving and Showing Off</h4>
+        <p class="card-text">Excellent!  You've programmed your first pattern.  In the process you learned our functions, <code>setLight()</code> and <code>delay()</code>.  Maybe you also learned a new language, JavaScript!<br><br>Now it's time to show off your accomplishments.</p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard15">
+        <h4 class="card-title">Saving and Showing Off</h4>
+        <p class="card-text">You have control now.<br><br>Make this code your own by changing it!  You can press the <b>Preview</b> button to see your changes in action.<br><br>When you're ready to see it on the tree, press <b>Next</b> to continue with the tutorial.<br><br>If you're looking for some more advanced ideas, consider these:
+        <ul>
+          <li>What if you make the color depend on the variable i?  Replace the 64 with the letter i and see what happens.</li>
+          <li>Can you make a second loop that will do what you have now, but in reverse?  That is, turn lights off, starting at the ends and closing in towards the middle?  Then your pattern will repeat smoothly.</li>
+        </ul>  </p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard16">
+        <h4 class="card-title">Saving and Showing Off</h4>
+        <p class="card-text">If you'd like to see your pattern on the tree, give it a name and click <b>Add to Queue</b>.  This will put you in line to appear on the tree, but if there are others before you, you'll have to wait for your turn.</p>
+        <a href="#" class="btn btn-primary" onclick="clickTutorialNext()">Next</a>
+    </script>
+
+    <script type="text/plain" id="tutorialCard17">
+        <h4 class="card-title">Saving and Showing Off</h4>
+        <p class="card-text">This concludes the tutorial.  When you're done, head back to the <b>Control</b> tab.  You can write more programs whenever you like by pressing the <b>Write Program</b> button there.<br><br>You can repeat the tutorial by visiting the <b>Learn</b> tab again at any time.<br><br>We look forward to enjoying your programs!</p>
+    </script>
+
+
+
+    <script type="text/javascript">
+        editor = ace.edit("editor");
+        editor.setTheme("ace/theme/eclipse");
+        editor.getSession().setMode("ace/mode/javascript");
+        editor.setShowPrintMargin(false);
+        editor.setFontSize(18);
+    </script>
+
+    <script type="text/javascript">
+        var tutorialStage = 0;
+
+        function clickTutorialNext() {
+            tutorialStage++;
+            tutorialLoadStage();
+        }
+
+        function clickTutorialBack() {
+            tutorialStage--;
+            tutorialLoadStage();
+        }
+
+        function tutorialLoadStage() {
+            $("#tutorialContent").html($("#tutorialCard" + tutorialStage).html());
+        }
+
+        var tutorialTime = 0;
+        var lastTutorialStage = 0;
+
+        function tutorialRunner() {
+            if (lastTutorialStage !== tutorialStage) {
+                lastTutorialStage = tutorialStage;
+                tutorialTime = 0;
+            }
+            tutorialTime++;
+
+            switch (tutorialStage) {
+                case 3:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);") {
+                        tutorialStage = 4;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 4:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);delay(500);") {
+                        tutorialStage = 5;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 5:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);" || editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);") {
+                        tutorialStage = 6;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 6:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);delay(500);" || editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);delay(500);") {
+                        tutorialStage = 7;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 7:
+                    console.log("Is 7");
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);delay(500);setLight(158,64,0,0);setLight(162,64,0,0);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);delay(500);setLight(158,64,0,0);setLight(162,64,0,0);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);delay(500);setLight(162,64,0,0);setLight(158,64,0,0);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);delay(500);setLight(162,64,0,0);setLight(158,64,0,0);") {
+                        tutorialStage = 8;
+                        tutorialLoadStage();
+                    } else {
+                        console.log("Is false");
+                        console.log(editorValue);
+                    }
+                    break;
+                case 8:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);delay(500);setLight(158,64,0,0);setLight(162,64,0,0);delay(500);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);delay(500);setLight(158,64,0,0);setLight(162,64,0,0);delay(500);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(159,64,0,0);setLight(161,64,0,0);delay(500);setLight(162,64,0,0);setLight(158,64,0,0);delay(500);" ||
+                        editorValue === "setLight(160,64,0,0);delay(500);setLight(161,64,0,0);setLight(159,64,0,0);delay(500);setLight(162,64,0,0);setLight(158,64,0,0);delay(500);") {
+                        tutorialStage = 9;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 11:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "for(vari=0;i<=2;i++){setLight(160-i,64,0,0);setLight(160+i,64,0,0);delay(500);}") {
+                        tutorialStage = 12;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 12:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "for(vari=0;i<=160;i++){setLight(160-i,64,0,0);setLight(160+i,64,0,0);delay(500);}") {
+                        tutorialStage = 13;
+                        tutorialLoadStage();
+                    }
+                    break;
+                case 13:
+                    // Progress automatically on code change
+                    var editorValue = editor.getValue().replace(/ /g, '').replace(/[\r\n]/g, '');
+                    if (editorValue === "for(vari=0;i<=160;i++){setLight(160-i,64,0,0);setLight(160+i,64,0,0);delay(100);}") {
+                        tutorialStage = 14;
+                        tutorialLoadStage();
+                    }
+                    break;
+
+            }
+        }
+
+        setInterval(tutorialRunner, 250);
+    </script>
+
+</body>
+
+</html>

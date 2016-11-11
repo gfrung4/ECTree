@@ -38,16 +38,10 @@ function audioUpdateQueue() {
 
 function audioQueueCountdown() {
     audioTime--;
-    if (audioTime <= 0) {
-        if (audioQueue.length !== 0) {
-            audioCurrent = audioQueue.shift();
-            audioTime = audioLengths.shift();
-        } else {
-            audioCurrent = " ";
-            audioTime = 0;
-        }
-        audioUpdateQueue();
+    if (audioTime < 0) {
+        audioTime = 0;
     }
+    
     var thisTime = audioTime;
     for (var i = 0, l = audioQueue.length; i < l; i++) {
         audioSetTime(i, thisTime);

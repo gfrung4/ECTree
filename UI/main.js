@@ -13,10 +13,20 @@ var socket = io();
 
 socket.on("connect", function() {
     // Code here will be run when the user is connected.
-    socket.emit("getQueue");
 });
 
 socket.on("addSuccess", function() {
     $("#ChooseScriptModal").modal('hide');
     $("#codeModal").modal('hide');
+    $("#AudioModal").modal('hide');
+    clickMainTab(0);
+});
+
+socket.on("updatePatterns", function(data) {
+    featuredPatterns = data.featured;
+    topPatterns = data.top;
+    recentPatterns = data.recent;
+    var tabNow = selectedTab;
+    selectedTab = -1;
+    clickTab(tabNow);
 });

@@ -29,7 +29,7 @@ function preview() {
             }
             for (var j = 0; j < 320; j++) {
                 var light = frames[previewFrame].strip[j];
-                ctx.fillStyle = "rgb(" + light.red + "," + light.green + "," + light.blue + ")";
+                ctx.fillStyle = "rgb(" + light.red*2 + "," + light.green*2 + "," + light.blue*2 + ")";
                 ctx.fillRect(j * (w / 320), 0, w / 320, h);
             }
             timeToNext = frames[previewFrame].delay;
@@ -43,16 +43,6 @@ function preview() {
 
 preview();
 
-function clickCode() {
-    $('#codeModalReplace').html($("#codeModal1").html());
-    $('#codeModal').modal('show');
-    editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
-    editor.setShowPrintMargin(false);
-    editor.setFontSize(18);
-}
-
 function clickBack() {
     $('#codeModalReplace').html($("#codeModal1").html());
     editor = ace.edit("editor");
@@ -60,7 +50,10 @@ function clickBack() {
     editor.getSession().setMode("ace/mode/javascript");
     editor.setShowPrintMargin(false);
     editor.setFontSize(18);
+    editor.setValue(userCode, 1);
 }
+
+var userCode = "";
 
 function clickAdd() {
     myPattern.name = $("#programName").val();
@@ -93,11 +86,12 @@ function clickGenerate(hide) {
     myPattern.data = simplify(generatedFrames);
 
     if (hide) {
+        userCode = code;
         $('#codeModalReplace').html($("#codeModal2").html());
     }
 }
 
-function setPixel(index, red, green, blue) {
+function setLight(index, red, green, blue) {
     if (index >= 0 && index < codeFrame.length) {
         codeFrame[index].red = Math.max(Math.min(red, 255), 0);
         codeFrame[index].green = Math.max(Math.min(green, 255), 0);

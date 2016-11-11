@@ -7,6 +7,7 @@ function clickChooseAudio() {
     socket.emit('addAudioQueue', {
         num: parseInt($('#audioSelectBtn input:radio:checked').val())
     });
+    $("#chooseAudioModalContent").html($("#codeModal3").html());
 }
 
 function clickScript() {
@@ -17,12 +18,12 @@ function clickScript() {
     editor.getSession().setMode("ace/mode/javascript");
     editor.setShowPrintMargin(false);
     editor.setFontSize(18);
-    editor.insert("// These are the two functions that you will need to use to write your code\n");
-    editor.insert("// setPixel(led, red, green, blue); this is used to set an led to a certain color\n");
-    editor.insert("// delay(t); this is a delay where t is in millaseconds\n")
+    editor.setValue($("#defaultCode").html(), 1);
 }
 
 function clickChoose() {
-  $('#chooseScriptModalContent').html($("#chooseScriptModalOriginal").html());
-  $('#ChooseScriptModal').modal('show');
+    $('#chooseScriptModalContent').html($("#chooseScriptModalOriginal").html());
+    $('#ChooseScriptModal').modal('show');
+    selectedTab = -1;
+    clickTab(0);
 }

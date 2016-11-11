@@ -30,8 +30,16 @@ var memBefore = process.memoryUsage().heapUsed;
 // Load the programs
 console.log("Loading " + programFiles.length + " programs...");
 var programs = [];
+var allPatterns = [];
+
 for (var i = 0, l = programFiles.length; i < l; i++) {
     programs[programFiles[i].toString()] = JSON.parse(fs.readFileSync("programs/" + programFiles[i] + ".json", "utf8"));
+
+    var simple = {
+        id: programFiles[i],
+        name: programs[programFiles[i].toString()].name
+    };
+    allPatterns.push(simple);
 }
 
 // Calculate the memory used by the programs
@@ -39,6 +47,9 @@ var memAfter = process.memoryUsage().heapUsed;
 var memUsed = Math.floor((memAfter - memBefore) / 100000) / 10;
 console.log("Done.  " + programFiles.length + " loaded programs use " + memUsed + " MB of RAM.");
 console.log("The next program ID will be " + nextId + ".");
+
+
+
 
 var queue = [];
 var queueNames = [];
@@ -48,7 +59,7 @@ var timeBetweenPatterns = 30;
 var time = 0;
 control.setProgram(programs[currentProgram]);
 
-var audioQueue = []; //"JingleBells","Silentnight"];
+var audioQueue = [];
 var audioQueueNames = [];
 var audioQueueLengths = [];
 var audioNames = ['Christmas Tree', 'Away In A Manger', 'So this is Christmas', 'Jingle Bells', 'Silent Night', 'White Christmas', 'Santa Claus is Coming to Town'];
@@ -61,25 +72,69 @@ var currentAudioLength = 0;
 
 app.use('/', express.static(__dirname + '/UI'));
 
+function updateQueue() {
+    io.sockets.emit('getQueue', {
+        current: currentProgramName,
+        queue: queueNames,
+        time: time,
+        timeBetweenPatterns: timeBetweenPatterns
+    });
+}
+
+function updateAudioQueue() {
+    io.sockets.emit('getAudioQueue', {
+        current: currentAudioName,
+        queue: audioQueueNames,
+        time: currentAudioLength - audioTime,
+        timeBetweenPatterns: audioQueueLengths
+    });
+}
+
+function getPatternsPacket() {
+    var sorted = allPatterns.sort(function(a, b) {
+        return b.id - a.id;
+    });
+
+    var amount = 10;
+    if (sorted.length > amount) {
+        sorted = sorted.slice(0, amount);
+    }
+
+    var featured = [{
+        id: 3,
+        name: 'Runner'
+    }];
+
+    return {
+        featured: featured,
+        top: [],
+        recent: sorted
+    };
+}
+
+getPatternsPacket();
+
+function updatePatterns() {
+    io.sockets.emit('updatePatterns', getPatternsPacket());
+}
+
 io.on('connection', function(socket) {
     // Code here will be run when a user connects.
     playerSocket = socket;
     console.log("[SOCKET] Connection started.");
-    socket.on('getQueue', function() {
-        console.log("client requested the queue");
-        socket.emit('getQueue', {
-            current: currentProgramName,
-            queue: queueNames,
-            time: time,
-            timeBetweenPatterns: timeBetweenPatterns
-        });
-        socket.emit('getAudioQueue', {
-            current: currentAudioName,
-            queue: audioQueueNames,
-            time: currentAudioLength - audioTime, // this should be time remaining in song
-            timeBetweenPatterns: audioQueueLengths //this should be the length of each song
-        });
+    socket.emit('getQueue', {
+        current: currentProgramName,
+        queue: queueNames,
+        time: time,
+        timeBetweenPatterns: timeBetweenPatterns
     });
+    socket.emit('getAudioQueue', {
+        current: currentAudioName,
+        queue: audioQueueNames,
+        time: currentAudioLength - audioTime,
+        timeBetweenPatterns: audioQueueLengths
+    });
+    socket.emit('updatePatterns', getPatternsPacket());
 
     socket.on('addNew', function(data) {
         console.log("Got add new.");
@@ -91,14 +146,14 @@ io.on('connection', function(socket) {
             }
             programs[thisId.toString()] = data;
             queue.push(thisId);
+            allPatterns.push({
+                id: thisId,
+                name: data.name
+            });
+            updatePatterns();
             queueNames.push(data.name);
             socket.emit('addSuccess');
-            io.sockets.emit('getQueue', {
-                current: currentProgramName,
-                queue: queueNames,
-                time: time,
-                timeBetweenPatterns: timeBetweenPatterns
-            });
+            updateQueue();
         });
     });
 
@@ -108,12 +163,7 @@ io.on('connection', function(socket) {
             queue.push(number);
             queueNames.push(programs[number].name);
             socket.emit('addSuccess');
-            io.sockets.emit('getQueue', {
-                current: currentProgramName,
-                queue: queueNames,
-                time: time,
-                timeBetweenPatterns: timeBetweenPatterns
-            });
+            updateQueue();
         }
     });
 
@@ -123,12 +173,7 @@ io.on('connection', function(socket) {
         audioQueueNames.push(audioNames[x.num]);
         audioQueueLengths.push(audioLength[x.num]);
         socket.emit('addSuccess');
-        io.sockets.emit('getAudioQueue', {
-            current: currentAudioName,
-            queue: audioQueueNames,
-            time: currentAudioLength - audioTime, // this should be time remaining in song
-            timeBetweenPatterns: audioQueueLengths //this should be the length of each song
-        });
+        updateAudioQueue();
     });
 
     socket.on('disconnect', function() {
@@ -148,6 +193,7 @@ function timer() {
             control.setProgram(programs[currentProgram]);
 
             time = timeBetweenPatterns;
+            updateQueue();
         } else {
             // console.log("Time expired, but no new pattern in queue!");
             time = 0;
@@ -161,10 +207,18 @@ function timer() {
             audioTime = 0;
             audioIsPlaying = true;
             play(audioQueue.shift());
+            updateAudioQueue();
         } else {
+            var needUpdate = false;
+            if (currentAudioName !== " ") {
+                needUpdate = true;
+            }
             currentAudioName = " ";
             currentAudioLength = 0;
             audioTime = 0;
+            if (needUpdate) {
+                updateAudioQueue();
+            }
         }
     }
 
@@ -180,7 +234,7 @@ function timer() {
 }
 setInterval(timer, 1000);
 
-http.listen(888, function() {
+http.listen(80, function() {
     console.log('The server has started.');
 });
 
